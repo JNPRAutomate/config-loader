@@ -1,6 +1,6 @@
 #Config-Loader
 
-### A simple SLAX script that allows for easily loading a config onto a a Junos device
+A simple SLAX script that allows for easily loading a config onto a a Junos device
 
 ## Loading the script
 
@@ -27,11 +27,13 @@ The script requires three arguments to load the configuration
   * override: Discards all other candidate configurations and replaces it with the loaded config (not needed for this use case)
   * set: Set is specified when the text file you are loaded uses configuration CLI commands
 3. format: The format of the loaded configuration
-  * xml: specifies 
+  * xml: Specifies the loaded file is XML
+  * text: Specifies the file is loaded as a text config
+    * This supports the junos formatted file or a series of CLI set/delete commands
+    * **If the loaded file is a series of set/delete commands the action MUST be set to "set"**
 
 ## Examples
 ```
-
 Successfully loaded config:
 
 root@device> op config-loader action set format text source http://172.16.237.1:8080/testconfig.set
@@ -48,3 +50,7 @@ Error fetching config
 fetch: http://172.16.237.1:*: Not Found
 
 ```
+
+## Testing
+
+Included in the repository under the tests/ folder is a series of test cases that can be used to test the tool
