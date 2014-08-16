@@ -21,7 +21,7 @@ var $arguments = {
  }
  <argument> {
     <name> "format";
-    <description> "Format of the configuration to be loaded (Options: xml or text, xml default)";
+    <description> "Format of the configuration to be loaded (Options: xml or text)";
  }
 }
 
@@ -67,24 +67,38 @@ template close-config() {
 }
 
 match / {
-    expr jcs:output("Opening candidate configuration");
-    call open-config();
-    expr jcs:output("Loading new configuration");
-    var $config-results = {
-        call load-new-config-url($url = $source,$action = $action,$format = $format);
-    }
-    /*convert results to xml node-set */
-    var $config-results-nodes = ext:node-set($config-results);
-    if ($config-results-nodes//xnm:error) {
-        /* error fetching the configuration, closing config */
-        expr jcs:output("Error fetching config");
-        expr jcs:output($config-results-nodes//xnm:error//message);
-        call close-config();
+    if (($source != "") and ($action != "") and ($format != "")) {
+        expr jcs:output("Opening candidate configuration");
+        call open-config();
+        expr jcs:output("Loading new configuration");
+        var $config-results = {
+            call load-new-config-url($url = $source,$action = $action,$format = $format);
+        }
+        /*convert results to xml node-set */
+        var $config-results-nodes = ext:node-set($config-results);
+        if ($config-results-nodes//xnm:error) {
+            /* error fetching the configuration, closing config */
+            expr jcs:output("Error fetching config");
+            expr jcs:output($config-results-nodes//xnm:error//message);
+            call close-config();
+        } else {
+            /* configuration successfully loaded, committing */
+            expr jcs:output("Commiting candidate configuration");
+            call commit-config($message = "Loaded new configuration from url " _ $source);
+        }
     } else {
-        /* configuration successfully loaded, committing */
-        expr jcs:output("Commiting candidate configuration");
-        call commit-config($message = "Loaded new configuration from url " _ $source);
+        expr jcs:output("Arguments not correctly specified");
+        if ($source == "") {
+            expr jcs:output("Please specify the source of the configuration");
+        }
+        if ($action == "") {
+            expr jcs:output("Please specify the required action");
+        }
+        if ($format == "") {
+            expr jcs:output("Please specify the file format");
+        }
     }
+    
     <op-script-results> {
     }
 }
