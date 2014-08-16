@@ -15,6 +15,7 @@
 The tool can remotely load a configuration file via a file, FTP, or HTTP URL.
 
 The script requires three arguments to load the configuration
+
 1. source: The URL source for the config
 ..* FTP, HTTP, or a file path
 ..* Example ftp://foo:bar@1.2.3.4:/config.text
