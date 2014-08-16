@@ -15,17 +15,17 @@
 The tool can remotely load a configuration file via a file, FTP, or HTTP URL.
 
 The script requires three arguments to load the configuration
-* source: The URL source for the config
+1. source: The URL source for the config
 ..* FTP, HTTP, or a file path
 ..* Example ftp://foo:bar@1.2.3.4:/config.text
 ..* Example http://1.2.3.4:8080/config.text
 ..* Example /var/tmp/config.text
-* action: The action to take with the config
+2. action: The action to take with the config
 ..* replace: Replaces the existing configuration with the newly loaded configuration file
 ..* merge: Merges the newly loaded configuration with the existing config
 ..* override: Discards all other candidate configurations and replaces it with the loaded config (not needed for this use case)
 ..* set: Set is specified when the text file you are loaded uses configuration CLI commands
-* format: The format of the loaded configuration
+3. format: The format of the loaded configuration
 ..* xml: specifies 
 
 ## Examples
